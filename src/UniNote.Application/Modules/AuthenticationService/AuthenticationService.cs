@@ -4,6 +4,7 @@ using UniNote.Application.Dtos;
 using UniNote.Application.Modules.AuthenticationService.Models;
 using UniNote.Application.Modules.TokenGenerator;
 using UniNote.Core.Exceptions;
+using UniNote.Core.Helpers;
 using UniNote.Data.Common;
 using UniNote.Domain.Entities;
 
@@ -13,7 +14,7 @@ public class AuthenticationService : IAuthenticationService
 {
     private readonly IRepository _repository;
     private readonly ITokenGenerator _tokenGenerator;
-    
+
     private readonly IMapper _mapper;
 
     public AuthenticationService(IRepository repository, ITokenGenerator tokenGenerator, IMapper mapper)
@@ -23,6 +24,16 @@ public class AuthenticationService : IAuthenticationService
         _mapper = mapper;
     }
 
+    public async Task SignUpAsync(string email, string password, string name)
+    {
+        if (await _repository.Queryable<User>()
+                .AnyAsync(x => string.Equals(x.Email, email, StringComparison.CurrentCultureIgnoreCase)))
+            throw new ConflictException();
+
+        var user = new User { Email = email, PasswordHashed = Hasher.Hash(password), Name = name};
+        await _repository.AddAndSaveChangesAsync(user);
+    }
+
     public async Task<InitialData> AuthenticateWithCredentials(string email, string password)
     {
         var user = await _repository.Queryable<User>()
@@ -30,9 +41,9 @@ public class AuthenticationService : IAuthenticationService
             .SingleOrDefaultAsync(x => string.Equals(x.Email, email, StringComparison.CurrentCultureIgnoreCase));
 
         if (user == null) throw new NotFoundException();
-        
+
         // IMPL password compare
-        
+
         return await GenerateInitialDataAsync(user.Id);
     }
 
