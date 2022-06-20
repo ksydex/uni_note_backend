@@ -7,7 +7,7 @@
     "Environment": "debug"
   },
   "ConnectionStrings": {
-    "DefaultDocker": "Host=postgresql_database;Port=5432;Database=flowyard;Username=postgres;Password=123123;Include Error Detail=true",
-    "DefaultLocal": "Host=localhost;Port=5433;Database=flowyard;Username=postgres;Password=123123;Include Error Detail=true"
+    "DefaultDocker": "Host=postgresql_database;Port=5432;Database=uni_note;Username=postgres;Password=123123;Include Error Detail=true",
+    "DefaultLocal": "Host=localhost;Port=5433;Database=uni_note;Username=postgres;Password=123123;Include Error Detail=true"
   }
 }

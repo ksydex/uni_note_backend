@@ -9,7 +9,7 @@ WORKDIR /src
 COPY ["src/UniNote.Core/UniNote.Core.csproj", "UniNote.Core/"]
 COPY ["src/UniNote.Domain/UniNote.Domain.csproj", "UniNote.Domain/"]
 COPY ["src/UniNote.Data/UniNote.Data.csproj", "UniNote.Data/"]
-COPY ["src/UniNote.Applcation/UniNote.Application.csproj", "UniNote.Application/"]
+COPY ["src/UniNote.Application/UniNote.Application.csproj", "UniNote.Application/"]
 COPY ["src/UniNote.Api/UniNote.Api.csproj", "UniNote.Api/"]
 
 RUN dotnet restore "/src/UniNote.Api/UniNote.Api.csproj"

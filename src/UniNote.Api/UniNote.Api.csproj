@@ -10,6 +10,9 @@
     <ItemGroup>
         <PackageReference Include="Autofac" Version="6.4.0" />
         <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
+        <PackageReference Include="FastEndpoints" Version="4.3.0" />
+        <PackageReference Include="FastEndpoints.Swagger" Version="4.3.0" />
+        <PackageReference Include="FluentValidation" Version="11.0.3" />
         <PackageReference Include="MediatR" Version="10.0.1" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.6" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.5" />
@@ -32,6 +35,11 @@
     <ItemGroup>
       <ProjectReference Include="..\UniNote.Application\UniNote.Application.csproj" />
       <ProjectReference Include="..\UniNote.Core\UniNote.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Endpoints\Authentication" />
+      <Folder Include="Endpoints\Helper" />
     </ItemGroup>
 
 </Project>

@@ -1,5 +1,8 @@
 using System.Net;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Autofac;
+using FastEndpoints;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
@@ -49,17 +52,18 @@ public static class StartupExtensions
         services
             .ConfigureAppSettings(configuration)
             .ConfigureHeadersAndCookie()
+            .AddFastEndpoints(null, new ConfigurationManager {})
             .ConfigureSwaggerService()
             .ConfigureCustomAuthentication(configuration)
             .ConfigureDbContext(configuration.GetConnectionString(GetDbConnectionString()))
-            .ConfigureCors()
-            .AddControllers()
-            .AddNewtonsoftJson(options =>
-            {
-                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-                options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
-            });
+            .ConfigureCors();
+            // .AddControllers()
+            // services.AddNewtonsoftJson(options =>
+            // {
+            //     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            //     options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+            //     options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+            // });
 
         services.AddHttpContextAccessor();
     }
@@ -85,13 +89,22 @@ public static class StartupExtensions
             .UseForwardedHeaders()
             .UseHttpsRedirection()
             .UseRouting()
-            .UseSwaggerWithCustomConfiguration()
             .UseAuthentication()
             .UseAuthorization()
-            .UseEndpoints(endpoints =>
+            .UseFastEndpointsMiddleware()
+            .UseSwaggerWithCustomConfiguration()
+        .UseEndpoints(endpoints =>
+        {
+            // endpoints.MapDefaultControllerRoute();
+            endpoints.MapFastEndpoints(c =>
             {
-                endpoints.MapDefaultControllerRoute();
+                c.SerializerOptions = o =>
+                {
+                    o.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                    o.PropertyNameCaseInsensitive = true;
+                };
             });
+        });
     }
 
 
