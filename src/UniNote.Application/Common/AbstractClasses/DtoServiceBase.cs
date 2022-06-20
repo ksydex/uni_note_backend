@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using UniNote.Application.Common.Interfaces;
+using UniNote.Application.Modules.AuthorizedContext.Common;
 using UniNote.Core.Common.AbstractClasses;
 using UniNote.Core.Common.Interfaces;
 using UniNote.Core.Exceptions;
@@ -13,13 +14,15 @@ public abstract class DtoServiceBase<T, TDto, TFilter> : IDtoService<TDto, TFilt
     where T : class, IEntity, new()
     where TFilter: class
 {
+    protected readonly IAuthorizedContext AuthorizedContext;  
     protected readonly IRepository Repository;
     protected readonly IMapper Mapper;
 
-    public DtoServiceBase(IRepository repository, IMapper mapper)
+    public DtoServiceBase(IRepository repository, IMapper mapper, IAuthorizedContext authorizedContext)
     {
         Repository = repository;
         Mapper = mapper;
+        AuthorizedContext = authorizedContext;
     }
 
     public abstract void Map(T dao, TDto dto);

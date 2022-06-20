@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using UniNote.Application.Common.AbstractClasses;
 using UniNote.Application.Dtos;
+using UniNote.Application.Modules.AuthorizedContext.Common;
 using UniNote.Application.Modules.DtoServices.NoteDtoService.Misc;
 using UniNote.Core.Common.AbstractClasses;
 using UniNote.Core.Common.Interfaces;
@@ -14,7 +15,8 @@ namespace UniNote.Application.Modules.DtoServices.NoteDtoService;
 
 public class NoteDtoService : DtoServiceBase<Note, NoteDto, NoteFilter>
 {
-    public NoteDtoService(IRepository repository, IMapper mapper) : base(repository, mapper)
+    public NoteDtoService(IRepository repository, IMapper mapper, IAuthorizedContext authorizedContext) : base(
+        repository, mapper, authorizedContext)
     {
     }
 
@@ -40,6 +42,6 @@ public class NoteDtoService : DtoServiceBase<Note, NoteDto, NoteFilter>
         if (f != null)
             q = q.WhereNext(f.GroupId, f.IsGroupIdFilterStrict ? x => x.GroupId == f.GroupId!.Value : x => true);
 
-        return q;
+        return q.Where(x => x.CreatedByUserId == AuthorizedContext.UserId);
     }
 }
