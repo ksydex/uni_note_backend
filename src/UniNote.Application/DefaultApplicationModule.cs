@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Autofac;
+using AutoMapper;
 using MediatR;
 using MediatR.Pipeline;
 using Microsoft.EntityFrameworkCore;
@@ -78,15 +79,15 @@ public class DefaultApplicationModule : Module
 
     private static void RegisterMapper(ContainerBuilder builder)
     {
-        // var mapperConfig = new MapperConfiguration(opts =>
-        // {
-        //     opts.AllowNullCollections = true;
-        //     ReflectionHelpers
-        //         .GetTypesInNamespace(Assembly.GetExecutingAssembly(), "Flowyard.Infrastructure.MappingProfiles")
-        //         .Where(x => Attribute.GetCustomAttribute(x, typeof(CompilerGeneratedAttribute)) == null).ToList()
-        //         .ForEach(x => opts.AddProfile(Activator.CreateInstance(x) as Profile));
-        // });
-        // builder.RegisterInstance(mapperConfig.CreateMapper()).SingleInstance();
+        var mapperConfig = new MapperConfiguration(opts =>
+        {
+            opts.AllowNullCollections = true;
+            ReflectionHelpers
+                .GetTypesInNamespace(Assembly.GetExecutingAssembly(), "UniNote.Application.MappingProfiles")
+                .Where(x => Attribute.GetCustomAttribute(x, typeof(CompilerGeneratedAttribute)) == null).ToList()
+                .ForEach(x => opts.AddProfile(Activator.CreateInstance(x) as Profile));
+        });
+        builder.RegisterInstance(mapperConfig.CreateMapper()).SingleInstance();
     }
 
     private void RegisterDevelopmentOnlyDependencies(ContainerBuilder builder)

@@ -20,6 +20,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\UniNote.Core\UniNote.Core.csproj" />
+      <ProjectReference Include="..\UniNote.Domain\UniNote.Domain.csproj" />
     </ItemGroup>
 
 </Project>

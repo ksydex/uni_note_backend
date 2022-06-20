@@ -4,9 +4,8 @@ using UniNote.Domain.Common.AbstractClasses;
 
 namespace UniNote.Domain.Entities;
 
-public class Group : EntityProductionWithUser, IWithName
+public class Tag : EntityProduction, IWithName
 {
     public string Name { get; set; } = "";
-    
-    public List<Note>? Notes { get; set; }
+    public string ColorHex { get; set; } = "";
 }

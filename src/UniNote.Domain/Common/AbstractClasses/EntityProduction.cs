@@ -1,11 +1,4 @@
-using System.ComponentModel.DataAnnotations;
-
-namespace UniNote.Domain.Common;
-
-public abstract class EntityBase
-{
-    [Key] public int Id { get; set; }
-}
+namespace UniNote.Domain.Common.AbstractClasses;
 
 public abstract class EntityProduction : EntityBase
 {

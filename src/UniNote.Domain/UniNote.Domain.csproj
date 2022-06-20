@@ -7,4 +7,8 @@
         <RootNamespace>UniNote.Domain</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\UniNote.Core\UniNote.Core.csproj" />
+    </ItemGroup>
+
 </Project>

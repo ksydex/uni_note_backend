@@ -5,11 +5,23 @@ using Microsoft.EntityFrameworkCore;
 using UniNote.Core.Common.AbstractClasses;
 using UniNote.Core.Common.Interfaces;
 using UniNote.Data.Extensions;
+using UniNote.Domain.Entities;
 
 namespace UniNote.Data;
 
 public class AppDbContext : DbContext
 {
+    public DbSet<User> Users => Set<User>();
+    public DbSet<Group> Groups  => Set<Group>();
+    
+    public DbSet<RefreshToken> RefreshTokens  => Set<RefreshToken>();
+    public DbSet<Tag> Tags => Set<Tag>();
+    
+    public DbSet<Note> Notes  => Set<Note>();
+    public DbSet<Note2Tag> Note2Tags  => Set<Note2Tag>();
+    
+
+
     private readonly IMediator _mediator;
 
     public AppDbContext(DbContextOptions<AppDbContext> options, IMediator mediator)

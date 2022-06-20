@@ -8,11 +8,14 @@
 
     <ItemGroup>
       <PackageReference Include="Autofac" Version="6.4.0" />
+      <PackageReference Include="AutoMapper" Version="11.0.1" />
+      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.10.0" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\UniNote.Core\UniNote.Core.csproj" />
       <ProjectReference Include="..\UniNote.Data\UniNote.Data.csproj" />
+      <ProjectReference Include="..\UniNote.Domain\UniNote.Domain.csproj" />
     </ItemGroup>
 
 </Project>
