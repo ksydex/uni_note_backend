@@ -1,0 +1,13 @@
+{
+  "AppSettings": {
+    "JwtLifeTime": "10",
+    "JwtIssuer": "UniNote.Issuer",
+    "SecretKey": "dectfvgbhnjsaogdiyzxvbc368461927hnjasdna",
+    "SelfHostUrl": "http://localhost:57679/",
+    "Environment": "debug"
+  },
+  "ConnectionStrings": {
+    "DefaultDocker": "Host=postgresql_database;Port=5432;Database=flowyard;Username=postgres;Password=123123;Include Error Detail=true",
+    "DefaultLocal": "Host=localhost;Port=5433;Database=flowyard;Username=postgres;Password=123123;Include Error Detail=true"
+  }
+}
