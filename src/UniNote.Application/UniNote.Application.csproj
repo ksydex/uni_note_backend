@@ -6,4 +6,13 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Autofac" Version="6.4.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\UniNote.Core\UniNote.Core.csproj" />
+      <ProjectReference Include="..\UniNote.Data\UniNote.Data.csproj" />
+    </ItemGroup>
+
 </Project>

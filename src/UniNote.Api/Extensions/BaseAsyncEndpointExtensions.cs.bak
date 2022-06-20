@@ -1,0 +1,45 @@
+using Microsoft.AspNetCore.Mvc;
+
+namespace UniNote.Api.Extensions;
+
+public static class BaseAsyncEndpointExtensions
+{
+    public static async Task<ActionResult> DefaultHandleAsync(this BaseEndpointAsync endpoint,
+        Func<Task<ActionResult>> func)
+    {
+        static object GetExceptionMessageByAppSettings(Exception e) =>
+            ExceptionHelpers.HandleException(AppSettings.Singleton.IsDebugMode, e);
+            
+        try
+        {
+            return await func();
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return endpoint.Forbid();
+        }
+        catch (ConflictException e)
+        {
+            return endpoint.Conflict(GetExceptionMessageByAppSettings(e));
+        }
+        catch (NotFoundException e)
+        {
+            return endpoint.NotFound(GetExceptionMessageByAppSettings(e));
+        }
+        catch (ValidationException e)
+        {
+            return endpoint.BadRequest(GetExceptionMessageByAppSettings(e));
+        }
+        catch (AutoMapperMappingException e)
+        {
+            if (AppSettings.Singleton.IsDebugMode)
+                throw;
+                
+            return endpoint.BadRequest(GetExceptionMessageByAppSettings(e));
+        }
+        catch (Exception e)
+        {
+            return endpoint.BadRequest(GetExceptionMessageByAppSettings(e));
+        }
+    }
+}
