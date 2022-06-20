@@ -5,7 +5,7 @@ namespace UniNote.Application.Common.Interfaces;
 public interface IDtoService<TDto, TFilter> : IServicePerLifeTimeScope
 {
     Task<TDto> AddAsync(TDto dto);
-    Task<List<TDto>> GetAll(TFilter f);
-    Task<TDto> GetById(int id);
+    Task<List<TDto>> GetAllAsync(TFilter f);
+    Task<TDto> GetByIdAsync(int id);
     Task RemoveAsync(int id);
 }

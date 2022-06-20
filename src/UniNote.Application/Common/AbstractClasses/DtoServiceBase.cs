@@ -7,14 +7,15 @@ using UniNote.Core.Common.Interfaces;
 using UniNote.Core.Exceptions;
 using UniNote.Core.Extensions;
 using UniNote.Data.Common;
+using UniNote.Domain.Common.Interfaces;
 
 namespace UniNote.Application.Common.AbstractClasses;
 
 public abstract class DtoServiceBase<T, TDto, TFilter> : IDtoService<TDto, TFilter>
     where T : class, IEntity, new()
-    where TFilter: class
+    where TFilter : class
 {
-    protected readonly IAuthorizedContext AuthorizedContext;  
+    protected readonly IAuthorizedContext AuthorizedContext;
     protected readonly IRepository Repository;
     protected readonly IMapper Mapper;
 
@@ -32,17 +33,18 @@ public abstract class DtoServiceBase<T, TDto, TFilter> : IDtoService<TDto, TFilt
     {
         var dao = new T();
         Map(dao, dto);
+        if (dao is IWithCreatedByUser byUser) byUser.CreatedByUserId = AuthorizedContext.UserId;
         await Repository.AddAndSaveChangesAsync(dao);
         return Mapper.Map<TDto>(dao);
     }
 
-    public async Task<List<TDto>> GetAll(TFilter filter)
+    public async Task<List<TDto>> GetAllAsync(TFilter filter)
     {
         var q = Queryable(Repository.Queryable<T>(), filter);
         return Mapper.Map<List<TDto>>(await q.AsNoTracking().ToListAsync());
     }
 
-    public async Task<TDto> GetById(int id)
+    public async Task<TDto> GetByIdAsync(int id)
     {
         var q = Queryable(Repository.Queryable<T>(), null);
         var e = await q.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
@@ -55,10 +57,10 @@ public abstract class DtoServiceBase<T, TDto, TFilter> : IDtoService<TDto, TFilt
     {
         var e = await Repository.Queryable<T>().SingleOrDefaultAsync(x => x.Id == id);
         if (e == null) throw new NotFoundException();
-        
+
         await Repository.RemoveAndSaveChangesAsync(e);
     }
-    
+
     protected static void Merge<T2, TDto2>(List<T2> daoList, List<TDto2> dtoList, Action<T2, TDto2> updateStrategy,
         Func<TDto2, T2> addStrategy, Func<T2, TDto2, bool> equalsFunc, Func<TDto2, bool> isDtoNewFunc,
         bool toRemove = true)

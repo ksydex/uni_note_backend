@@ -13,7 +13,7 @@ using UniNote.Domain.Entities;
 
 namespace UniNote.Application.Modules.DtoServices.NoteDtoService;
 
-public class NoteDtoService : DtoServiceBase<Note, NoteDto, NoteFilter>
+public class NoteDtoService : DtoServiceBase<Note, NoteDto, NoteFilter>, INoteDtoService
 {
     public NoteDtoService(IRepository repository, IMapper mapper, IAuthorizedContext authorizedContext) : base(
         repository, mapper, authorizedContext)
