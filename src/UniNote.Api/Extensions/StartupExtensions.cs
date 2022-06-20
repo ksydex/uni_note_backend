@@ -8,6 +8,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using UniNote.Api.Configurations;
+using UniNote.Api.Middlewares;
 using UniNote.Application;
 using UniNote.Core.Constants;
 using UniNote.Core.Helpers;
@@ -24,13 +25,6 @@ public static class StartupExtensions
             public const string Docker = "DefaultDocker";
             public const string Local = "DefaultLocal";
             public const string Test = "TestLocal";
-        }
-
-        public static class HangFire
-        {
-            public const string Docker = "SqlServerDocker";
-            public const string Local = "SqlServerLocal";
-            public const string Test = "SqlServerLocal";
         }
     }
 
@@ -52,18 +46,18 @@ public static class StartupExtensions
         services
             .ConfigureAppSettings(configuration)
             .ConfigureHeadersAndCookie()
-            .AddFastEndpoints(null, new ConfigurationManager {})
+            .AddFastEndpoints()
             .ConfigureSwaggerService()
             .ConfigureCustomAuthentication(configuration)
             .ConfigureDbContext(configuration.GetConnectionString(GetDbConnectionString()))
             .ConfigureCors();
-            // .AddControllers()
-            // services.AddNewtonsoftJson(options =>
-            // {
-            //     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-            //     options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-            //     options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
-            // });
+        // .AddControllers()
+        // services.AddNewtonsoftJson(options =>
+        // {
+        //     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+        //     options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+        //     options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+        // });
 
         services.AddHttpContextAccessor();
     }
@@ -85,6 +79,7 @@ public static class StartupExtensions
             app.UseHsts();
         }
 
+        app.UseMiddleware<ErrorHandlerMiddleware>();
         app.UseCustomStaticFiles()
             .UseForwardedHeaders()
             .UseHttpsRedirection()
@@ -92,19 +87,20 @@ public static class StartupExtensions
             .UseAuthentication()
             .UseAuthorization()
             .UseFastEndpointsMiddleware()
-            .UseSwaggerWithCustomConfiguration()
-        .UseEndpoints(endpoints =>
-        {
-            // endpoints.MapDefaultControllerRoute();
-            endpoints.MapFastEndpoints(c =>
+            .UseEndpoints(endpoints =>
             {
-                c.SerializerOptions = o =>
+                // endpoints.MapDefaultControllerRoute();
+                endpoints.MapFastEndpoints(c =>
                 {
-                    o.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-                    o.PropertyNameCaseInsensitive = true;
-                };
-            });
-        });
+                    c.RoutingOptions = o => o.Prefix = "api";
+                    c.SerializerOptions = o =>
+                    {
+                        o.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                        o.PropertyNameCaseInsensitive = true;
+                    };
+                });
+            })
+            .UseSwaggerWithCustomConfiguration();
     }
 
 
@@ -143,7 +139,7 @@ public static class StartupExtensions
                         "Cache-Control", $"public, max-age={604800}")
             }
         );
-        
+
         return app;
     }
 

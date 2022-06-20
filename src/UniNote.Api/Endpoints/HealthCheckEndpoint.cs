@@ -16,15 +16,6 @@ public class HealthCheckEndpoint : Endpoint<HealthCheckEndpointRequest, HealthCh
         Verbs(Http.GET);
         Routes("/health-check");
         AllowAnonymous();
-        Description(b => b
-            .Produces<ErrorResponse>(400,"application/json+problem")
-            .ProducesProblem(403));
-        Summary(s => {
-            s.Summary = "short summary goes here";
-            s.Description = "long description goes here";
-            s.Responses[200] = "success response description goes here";
-            s.Responses[403] = "forbidden response description goes here";
-        });   
     }
 
     public override async Task HandleAsync(HealthCheckEndpointRequest req, CancellationToken ct)
