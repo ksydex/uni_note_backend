@@ -2,7 +2,7 @@ using AutoMapper;
 using UniNote.Application.Dtos;
 using UniNote.Domain.Entities;
 
-namespace UniNote.Application.MappingProfile;
+namespace UniNote.Application.MappingProfiles;
 
 public class DefaultMappingProfile : Profile
 {

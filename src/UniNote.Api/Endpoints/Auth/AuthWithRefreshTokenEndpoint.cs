@@ -6,6 +6,7 @@ using UniNote.Application.Modules.AuthenticationService.Models;
 
 namespace UniNote.Api.Endpoints.Auth;
 
+// Tested
 public record AuthWithRefreshTokenEndpointRequest
 {
     public string RefreshToken { get; set; } = "";

@@ -27,7 +27,7 @@ public class AuthenticationService : IAuthenticationService
     public async Task SignUpAsync(string email, string password, string name)
     {
         if (await _repository.Queryable<User>()
-                .AnyAsync(x => string.Equals(x.Email, email, StringComparison.CurrentCultureIgnoreCase)))
+                .AnyAsync(x => x.Email.ToLower() == email.ToLower()))
             throw new ConflictException();
 
         var user = new User { Email = email, PasswordHashed = Hasher.Hash(password), Name = name};
@@ -38,7 +38,7 @@ public class AuthenticationService : IAuthenticationService
     {
         var user = await _repository.Queryable<User>()
             .AsNoTracking()
-            .SingleOrDefaultAsync(x => string.Equals(x.Email, email, StringComparison.CurrentCultureIgnoreCase));
+            .SingleOrDefaultAsync(x => x.Email.ToLower() == email.ToLower());
 
         if (user == null) throw new NotFoundException();
 
@@ -51,6 +51,8 @@ public class AuthenticationService : IAuthenticationService
     {
         var token = await _repository.Queryable<RefreshToken>().SingleOrDefaultAsync(x => x.Token == refreshToken);
         if (token == null) throw new NotFoundException("");
+
+        await _repository.RemoveAndSaveChangesAsync(token);
 
         return await GenerateInitialDataAsync(token.UserId);
     }

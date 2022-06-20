@@ -5,6 +5,7 @@ using UniNote.Application.Modules.AuthenticationService.Models;
 
 namespace UniNote.Api.Endpoints.Auth;
 
+// Tested
 public record AuthSignUpEndpointRequest
 {
     public string Email { get; set; } = "";

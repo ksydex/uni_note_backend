@@ -51,13 +51,6 @@ public static class StartupExtensions
             .ConfigureCustomAuthentication(configuration)
             .ConfigureDbContext(configuration.GetConnectionString(GetDbConnectionString()))
             .ConfigureCors();
-        // .AddControllers()
-        // services.AddNewtonsoftJson(options =>
-        // {
-        //     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-        //     options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-        //     options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
-        // });
 
         services.AddHttpContextAccessor();
     }

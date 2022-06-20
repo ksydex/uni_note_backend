@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using UniNote.Core.Common.AbstractClasses;
 using UniNote.Core.Common.Interfaces;
 using UniNote.Core.Enums;
@@ -9,6 +10,6 @@ public abstract class EntityBase : IEntity
 {
     [Key] public int Id { get; set; }
     
-    public List<DomainEventBase> Events { get; set; } = new();
-    public ActionTypes? ActionType { get; set; }
+    [NotMapped] public List<DomainEventBase> Events { get; set; } = new();
+    [NotMapped] public ActionTypes? ActionType { get; set; }
 }
