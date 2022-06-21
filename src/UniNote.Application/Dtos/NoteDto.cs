@@ -7,7 +7,7 @@ public record NoteDto
     public string Body { get; set; } = "";
 
     public bool IsFavorite { get; set; }
-    
+    public bool IsArchived { get; set; }
     public int? GroupId { get; set; }
     
     public List<Note2TagDto>? Tags { get; set; }

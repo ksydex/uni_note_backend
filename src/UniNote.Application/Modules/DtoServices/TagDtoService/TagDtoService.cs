@@ -17,6 +17,9 @@ public class TagDtoService : DtoServiceBase<Tag, TagDto, TagFilter>, ITagDtoServ
         repository, mapper, authorizedContext)
     {
     }
+    
+    public override int IdFromDto(TagDto dto)
+        => dto.Id;
 
     public override void Map(Tag dao, TagDto dto)
     {

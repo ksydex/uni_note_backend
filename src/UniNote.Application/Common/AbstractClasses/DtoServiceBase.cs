@@ -37,6 +37,21 @@ public abstract class DtoServiceBase<T, TDto, TFilter> : IDtoService<TDto, TFilt
         return Mapper.Map<TDto>(dao);
     }
 
+    public abstract int IdFromDto(TDto dto);
+
+    public async Task<TDto> UpdateAsync(TDto dto)
+    {
+        var q = Queryable(Repository.Queryable<T>(), null);
+        var dao = await q.SingleOrDefaultAsync(x => x.Id == IdFromDto(dto));
+
+        if (dao == null) throw new NotFoundException();
+
+        Map(dao, dto);
+
+        await Repository.SaveChangesAsync();
+        return Mapper.Map<TDto>(dao);
+    }
+
     public async Task<List<TDto>> GetAllAsync(TFilter filter)
     {
         var q = Queryable(Repository.Queryable<T>(), filter);
@@ -52,7 +67,7 @@ public abstract class DtoServiceBase<T, TDto, TFilter> : IDtoService<TDto, TFilt
     }
 
 
-    public async Task RemoveAsync(int id)
+    public virtual async Task RemoveAsync(int id)
     {
         var e = await Repository.Queryable<T>().SingleOrDefaultAsync(x => x.Id == id);
         if (e == null) throw new NotFoundException();

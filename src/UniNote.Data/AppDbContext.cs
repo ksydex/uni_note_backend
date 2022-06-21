@@ -79,10 +79,6 @@ public class AppDbContext : DbContext
         
         foreach (var entry in ChangeTracker.Entries<IWithDateUpdated>().Where(e => e.State == EntityState.Modified))
             entry.Entity.DateUpdated = utcNow;
-        
-        foreach (var entry in ChangeTracker.Entries<IDeletable>().Where(e => e.State == EntityState.Modified && e.Entity.IsDeleted))
-            entry.Entity.DateDeletedAt = utcNow;
-
     }
 
     #endregion

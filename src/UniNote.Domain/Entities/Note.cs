@@ -11,6 +11,8 @@ public class Note : EntityProductionWithUser, IWithName
 
     public bool IsFavorite { get; set; }
     
+    public bool IsArchived { get; set; }
+    
     public Group? Group { get; set; }
     public int? GroupId { get; set; }
     
