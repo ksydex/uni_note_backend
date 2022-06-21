@@ -25,6 +25,7 @@ public class NoteGetAllEndpoint : EndpointWithoutRequest<List<NoteDto>>
         {
             GroupId = int.TryParse(HttpContext.Request.Query["GroupId"], out var v) ? v : null,
             IsGroupIdFilterStrict = bool.TryParse(HttpContext.Request.Query["IsGroupIdFilterStrict"], out var vv) && vv,
+            Name = HttpContext.Request.Query["Name"].FirstOrDefault(),
         };
         await SendAsync(await _service.GetAllAsync(req));
     }

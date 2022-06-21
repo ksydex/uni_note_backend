@@ -16,7 +16,7 @@ public class GroupAddEndpoint : Endpoint<GroupDto, GroupDto>
     public override void Configure()
     {
         Verbs(Http.POST);
-        Routes("/Group");
+        Routes("/group");
     }
     
     public override async Task HandleAsync(GroupDto req, CancellationToken ct)
