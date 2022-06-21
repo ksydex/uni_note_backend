@@ -2,47 +2,33 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using UniNote.Application.Common.AbstractClasses;
 using UniNote.Application.Dtos;
+using UniNote.Application.Extensions;
 using UniNote.Application.Modules.AuthorizedContext.Common;
-using UniNote.Application.Modules.DtoServices.NoteDtoService.Misc;
-using UniNote.Core.Common.AbstractClasses;
-using UniNote.Core.Common.Interfaces;
-using UniNote.Core.Exceptions;
+using UniNote.Application.Modules.DtoServices.TagDtoService.Misc;
 using UniNote.Core.Extensions;
 using UniNote.Data.Common;
 using UniNote.Domain.Entities;
 
-namespace UniNote.Application.Modules.DtoServices.NoteDtoService;
+namespace UniNote.Application.Modules.DtoServices.TagDtoService;
 
-public class NoteDtoService : DtoServiceBase<Note, NoteDto, NoteFilter>, INoteDtoService
+public class TagDtoService : DtoServiceBase<Tag, TagDto, TagFilter>, ITagDtoService
 {
-    public NoteDtoService(IRepository repository, IMapper mapper, IAuthorizedContext authorizedContext) : base(
+    public TagDtoService(IRepository repository, IMapper mapper, IAuthorizedContext authorizedContext) : base(
         repository, mapper, authorizedContext)
     {
     }
 
-    public override void Map(Note dao, NoteDto dto)
+    public override void Map(Tag dao, TagDto dto)
     {
-        dao.Body = dto.Body;
-        dao.GroupId = dto.GroupId;
-        dao.IsFavorite = dto.IsFavorite;
-
-        if (dto.Tags != null)
-        {
-            dao.Tags ??= new List<Note2Tag>();
-
-            Merge(dao.Tags, dto.Tags, (_, _) => { }, x => new Note2Tag
-            {
-                TagId = x.TagId
-            }, (x, y) => x.Id == y.Id, x => x.Id == 0);
-        }
+        dao.Name = dto.Name;
+        dto.ColorHex = dto.ColorHex;
     }
 
-    public override IQueryable<Note> Queryable(IQueryable<Note> q, NoteFilter? f)
+    public override IQueryable<Tag> Queryable(IQueryable<Tag> q, TagFilter? f)
     {
         if (f != null)
-            q = q.WhereNext(f.GroupId, f.IsGroupIdFilterStrict ? x => x.GroupId == f.GroupId!.Value : x => true);
+            q = q.WhereNext(f.Name, qq => qq.WhereName(f.Name!));
 
-        return q.Where(x => x.CreatedByUserId == AuthorizedContext.UserId)
-            .Include(x => x.Tags!).ThenInclude(x => x.Tag).AsSplitQuery();
+        return q.Where(x => x.CreatedByUserId == AuthorizedContext.UserId);
     }
 }

@@ -2,11 +2,9 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using UniNote.Application.Common.AbstractClasses;
 using UniNote.Application.Dtos;
+using UniNote.Application.Extensions;
 using UniNote.Application.Modules.AuthorizedContext.Common;
 using UniNote.Application.Modules.DtoServices.NoteDtoService.Misc;
-using UniNote.Core.Common.AbstractClasses;
-using UniNote.Core.Common.Interfaces;
-using UniNote.Core.Exceptions;
 using UniNote.Core.Extensions;
 using UniNote.Data.Common;
 using UniNote.Domain.Entities;
@@ -40,7 +38,8 @@ public class NoteDtoService : DtoServiceBase<Note, NoteDto, NoteFilter>, INoteDt
     public override IQueryable<Note> Queryable(IQueryable<Note> q, NoteFilter? f)
     {
         if (f != null)
-            q = q.WhereNext(f.GroupId, f.IsGroupIdFilterStrict ? x => x.GroupId == f.GroupId!.Value : x => true);
+            q = q.WhereNext(f.GroupId, f.IsGroupIdFilterStrict ? x => x.GroupId == f.GroupId!.Value : x => true)
+                    .WhereNext(f.Name, qq => qq.WhereName(f.Name!));;
 
         return q.Where(x => x.CreatedByUserId == AuthorizedContext.UserId)
             .Include(x => x.Tags!).ThenInclude(x => x.Tag).AsSplitQuery();

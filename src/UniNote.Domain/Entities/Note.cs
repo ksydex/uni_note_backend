@@ -1,11 +1,12 @@
+using UniNote.Core.Common.Interfaces;
 using UniNote.Domain.Common;
 using UniNote.Domain.Common.AbstractClasses;
 
 namespace UniNote.Domain.Entities;
 
-public class Note : EntityProductionWithUser
+public class Note : EntityProductionWithUser, IWithName
 {
-    public string Name => "Should be parsed from body";
+    public string Name { get; set; } = "";
     public string Body { get; set; } = "";
 
     public bool IsFavorite { get; set; }

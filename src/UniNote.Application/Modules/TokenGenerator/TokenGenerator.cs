@@ -1,13 +1,11 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using UniNote.Core.Common.Interfaces;
 using UniNote.Core.Helpers;
 using UniNote.Data.Common;
-using UniNote.Domain.Common;
 using UniNote.Domain.Entities;
 
 namespace UniNote.Application.Modules.TokenGenerator;

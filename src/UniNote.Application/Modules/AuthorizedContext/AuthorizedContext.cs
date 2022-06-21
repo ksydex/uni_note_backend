@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Http;
 using UniNote.Application.Modules.AuthorizedContext.Common;
-using UniNote.Data.Common;
 
 namespace UniNote.Application.Modules.AuthorizedContext;
 

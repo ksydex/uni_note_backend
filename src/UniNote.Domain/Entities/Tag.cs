@@ -4,7 +4,7 @@ using UniNote.Domain.Common.AbstractClasses;
 
 namespace UniNote.Domain.Entities;
 
-public class Tag : EntityProduction, IWithName
+public class Tag : EntityProductionWithUser, IWithName
 {
     public string Name { get; set; } = "";
     public string ColorHex { get; set; } = "";

@@ -1,5 +1,3 @@
-using UniNote.Domain.Entities;
-
 namespace UniNote.Application.Dtos;
 
 public record Note2TagDto

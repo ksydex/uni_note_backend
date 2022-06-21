@@ -1,10 +1,6 @@
-using FastEndpoints;
+namespace UniNote.Application.Modules.DtoServices.TagDtoService.Misc;
 
-namespace UniNote.Application.Modules.DtoServices.NoteDtoService.Misc;
-
-public class NoteFilter
+public class TagFilter
 {
-    
-    public int? GroupId { get; set; }
-    public bool IsGroupIdFilterStrict { get; set; }
+    public string? Name { get; set; }
 }

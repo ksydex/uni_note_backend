@@ -2,7 +2,6 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using UniNote.Application.Common.Interfaces;
 using UniNote.Application.Modules.AuthorizedContext.Common;
-using UniNote.Core.Common.AbstractClasses;
 using UniNote.Core.Common.Interfaces;
 using UniNote.Core.Exceptions;
 using UniNote.Core.Extensions;
