@@ -1,14 +1,14 @@
 using FastEndpoints;
 using UniNote.Application.Dtos;
-using UniNote.Application.Modules.DtoServices.NoteDtoService.Misc;
+using UniNote.Application.Modules.DtoServices.GroupDtoService.Misc;
 
-namespace UniNote.Api.Endpoints.Note;
+namespace UniNote.Api.Endpoints.Group;
 
-public class NoteGetAllEndpoint : EndpointWithoutRequest<List<NoteDto>>
+public class GroupGetAllEndpoint : EndpointWithoutRequest<List<GroupDto>>
 {
-    private readonly INoteDtoService _service;
+    private readonly IGroupDtoService _service;
 
-    public NoteGetAllEndpoint(INoteDtoService service)
+    public GroupGetAllEndpoint(IGroupDtoService service)
     {
         _service = service;
     }
@@ -16,12 +16,12 @@ public class NoteGetAllEndpoint : EndpointWithoutRequest<List<NoteDto>>
     public override void Configure()
     {
         Verbs(Http.GET);
-        Routes("/note");
+        Routes("/Group");
     }
 
     public override async Task HandleAsync(CancellationToken ct)
     {
-        var req = new NoteFilter
+        var req = new GroupFilter
         {
             GroupId = int.TryParse(HttpContext.Request.Query["GroupId"], out var v) ? v : null,
             IsGroupIdFilterStrict = bool.TryParse(HttpContext.Request.Query["IsGroupIdFilterStrict"], out var vv) && vv,

@@ -42,6 +42,7 @@ public class NoteDtoService : DtoServiceBase<Note, NoteDto, NoteFilter>, INoteDt
         if (f != null)
             q = q.WhereNext(f.GroupId, f.IsGroupIdFilterStrict ? x => x.GroupId == f.GroupId!.Value : x => true);
 
-        return q.Where(x => x.CreatedByUserId == AuthorizedContext.UserId);
+        return q.Where(x => x.CreatedByUserId == AuthorizedContext.UserId)
+            .Include(x => x.Tags!).ThenInclude(x => x.Tag).AsSplitQuery();
     }
 }
